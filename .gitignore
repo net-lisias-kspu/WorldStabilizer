@@ -1,5 +1,9 @@
-*~
-*.userprefs
-WorldStabilizer.userprefs
-WorldStabilizer/WorldStabilizer/bin
-WorldStabilizer/WorldStabilizer/obj
+.vs
+Archive
+GameData/**/Plugins/*.dll
+GameData/**/LICENSE
+GameData/**/README.md
+GameData/**/*.version
+bin
+**/obj
+**/Version.cs
