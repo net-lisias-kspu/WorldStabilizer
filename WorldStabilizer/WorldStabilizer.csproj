@@ -40,6 +40,9 @@
     <Compile Include="HarpoonReconnector.cs" />
     <Compile Include="KASAPI.cs" />
     <Compile Include="KASPylonReconnector.cs" />
+    <Compile Include="Version.cs">
+      <DependentUpon>Version.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -56,5 +59,11 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>..\..\..\..\LIB\managed\1.4.1\Assembly-CSharp.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Version.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Version.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 </Project>
