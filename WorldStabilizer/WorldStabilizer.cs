@@ -1,11 +1,12 @@
 ﻿using System;
-using UnityEngine;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
-using ModuleWheels;
 using System.Reflection;
 using System.Collections;
+using System.IO;
+using UnityEngine;
+using ModuleWheels;
 
 namespace WorldStabilizer
 {
@@ -774,10 +775,12 @@ namespace WorldStabilizer
 		}
 
 		private void configure() {
-		
-			// FIXME: How do I use KSPField here for configuration? 
 
-			var config = GameDatabase.Instance.GetConfigs ("WorldStabilizer").FirstOrDefault ().config;
+			// FIXME: How do I use KSPField here for configuration?
+
+			string PLUGIN_DATA = Path.Combine(KSPUtil.ApplicationRootPath, "PluginData/WorldStabilizer");
+			if (!Directory.Exists(PLUGIN_DATA)) Directory.CreateDirectory(PLUGIN_DATA);
+			var config = GameDatabase.Instance.GetConfigs (Path.Combine(PLUGIN_DATA, "settings")).FirstOrDefault ().config;
 
 			string nodeValue = config.GetValue ("stabilizationTicks");
 			if (nodeValue != null)
