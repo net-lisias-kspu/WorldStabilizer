@@ -1,5 +1,8 @@
 # WorldStabilizer :: Change Log
 
+* 2018-0408: 0.9.1 (whale_2) for KSP 1.4.2
+	+ Compatibility Release
+	+ Although the bouncing bug was almost fixed in KSP 1.4.x, there are still some odd situations where it happens, according to several reports. This release does not add features or bugfixes, it's just a recompile against 1.4.2 DLLs and correct version for MiniAVC. 
 * 2018-0319: 0.9.0 beta (whale_2) for KSP 1.4.x
 	+ Seems like some odd situations are still not very well addressed by Squad.
 	+ Particularly, a mix of low detail terrain setting and edge of biomes or colliders. 
