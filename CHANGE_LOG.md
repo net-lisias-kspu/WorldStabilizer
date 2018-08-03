@@ -1,5 +1,9 @@
 # WorldStabilizer :: Change Log
 
+* 2018-0110: 0.8 (whale_2) for KSP 1.3.1
+	+ Support For KIS/KAS pylons
+	+ Changes:
+		- If the vessel contains KIS/KAS pylons with staticAttach = true, i.e they have a physical connection to the ground, they will be detached before raising the vessel and re-attached when stabilization ends.
 * 2018-0108: 0.7.1 (whale_2) for KSP 1.3.1
 	+ Bugfix Release
 	+ There should be a bit less explosions.
