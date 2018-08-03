@@ -1,5 +1,9 @@
 # WorldStabilizer :: Change Log
 
+* 2018-0110: 0.8.1 (whale_2) for KSP 1.3.1
+	+ Bugfix Release
+	+ Changes:
+		- Fixed ignoring of actual attachment state of KIS/KAS pylon.
 * 2018-0110: 0.8 (whale_2) for KSP 1.3.1
 	+ Support For KIS/KAS pylons
 	+ Changes:
