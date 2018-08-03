@@ -1,5 +1,10 @@
 # WorldStabilizer :: Change Log
 
+* 2018-0114: 0.8.3 (whale_2) for KSP 1.3.1
+	+ Bugfix Release
+	+ Changes
+		- Previous version introduced hard dependency on specific KAS/KIS version. This versions drops the dependency
+		- Some black magic around moored vessels has a slight chance to work. I.e. vessel, moored by KAS harpoon and winch more often stays moored and intact than not.
 * 2018-0113: 0.8.2 (whale_2) for KSP 1.3.1
 	+ Bugfix Release
 		- Please delete old version before updating to this
