@@ -1,5 +1,12 @@
 # WorldStabilizer :: Change Log
 
+* 2018-0113: 0.8.2 (whale_2) for KSP 1.3.1
+	+ Bugfix Release
+		- Please delete old version before updating to this
+	+ Changes
+		- KIS/KAS blocks and Hangars should not float above the surface any more
+		- Reworked the way vessels, moored by harpoons, are treated - should be more stable
+		- MiniAVC should work properly now.
 * 2018-0110: 0.8.1 (whale_2) for KSP 1.3.1
 	+ Bugfix Release
 	+ Changes:
