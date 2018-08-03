@@ -1,5 +1,13 @@
 # WorldStabilizer :: Change Log
 
+* 2018-0103: 0.7 (whale_2) for KSP 1.3.1
+	+ First Public Release
+	+ Expect some bugs and/or explosions. Backup your save prior to trying this out!
+	+ Please report problems here or on KSP forums.
+	+ Changes:
+		- Debug is disabled by default
+		- Added MiniAVC and .version file
+		- Changed versioning
 * 2017-1217: 0.6 (whale_2) for KSP 1.3.1 PRE-RELEASE
 	+ Rewrote whole altitude detection system
 	+ Added debug markers for vessel top and bottom points
