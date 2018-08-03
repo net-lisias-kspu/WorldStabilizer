@@ -1,5 +1,7 @@
 # WorldStabilizer :: Change Log
 
+* 2017-1210: 0.3 (whale_2) for KSP 1.3.1 PRE-RELEASE
+	+ More safeguarding 
 * 2017-1210: 0.2 (whale_2) for KSP 1.3.1 PRE-RELEASE
 	+ Tried to work around mysteriois situation where raycast from bottom point does not hit the ground, but hits something beneath.
 	+ Excluded KerbalEVA from stabilizing.
