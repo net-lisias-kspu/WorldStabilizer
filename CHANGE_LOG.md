@@ -1,5 +1,9 @@
 # WorldStabilizer :: Change Log
 
+* 2018-0510: 0.9.2 (whale_2) for KSP 1.4.3
+	+ Recompile against 1.4.3
+	+ AVC version update
+	+ very minor logging tweaks. 
 * 2018-0408: 0.9.1 (whale_2) for KSP 1.4.2
 	+ Compatibility Release
 	+ Although the bouncing bug was almost fixed in KSP 1.4.x, there are still some odd situations where it happens, according to several reports. This release does not add features or bugfixes, it's just a recompile against 1.4.2 DLLs and correct version for MiniAVC. 
