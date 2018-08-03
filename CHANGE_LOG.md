@@ -1,5 +1,8 @@
 # WorldStabilizer :: Change Log
 
+* 2018-0319: 0.9.0 beta (whale_2) for KSP 1.4.x
+	+ Seems like some odd situations are still not very well addressed by Squad.
+	+ Particularly, a mix of low detail terrain setting and edge of biomes or colliders. 
 * 2018-0316: 0.8.4 (whale_2) for KSP 1.3.1
 	+ Probably final release for 1.3.1
 	+ The 1.4.1 is here and from the first glance it works much smoother - I was not able to find something to complain about regarding bouncing on vessel unpacking. Some unorthodox stuff like mooring vessels with KAS still might be tricky, but we'll see it later.
