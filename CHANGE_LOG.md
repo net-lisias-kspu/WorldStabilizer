@@ -1,5 +1,7 @@
 # WorldStabilizer :: Change Log
 
+* 2017-1211: 0.4 (whale_2) for KSP 1.3.1 PRE-RELEASE
+	+ Excluded meshes without colliders from size calculations, but forced inclusion of wheels. For some reasons wheel meshes have no colliders attached to them. Some more safeguarding against going underground.
 * 2017-1210: 0.3 (whale_2) for KSP 1.3.1 PRE-RELEASE
 	+ More safeguarding 
 * 2017-1210: 0.2 (whale_2) for KSP 1.3.1 PRE-RELEASE
