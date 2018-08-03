@@ -1,5 +1,11 @@
 # WorldStabilizer :: Change Log
 
+* 2018-0316: 0.8.4 (whale_2) for KSP 1.3.1
+	+ Probably final release for 1.3.1
+	+ The 1.4.1 is here and from the first glance it works much smoother - I was not able to find something to complain about regarding bouncing on vessel unpacking. Some unorthodox stuff like mooring vessels with KAS still might be tricky, but we'll see it later.
+	+ Changes:
+		- Addressed a bug when vessel is placed under the roof. See [Forum Thread](https://forum.kerbalspaceprogram.com/index.php?/topic/169206-131-worldstabilizer-bugfix-for-vessels-bouncing-on-scene-load/&do=findComment&comment=3310632)
+		- Some more refactoring done
 * 2018-0114: 0.8.3 (whale_2) for KSP 1.3.1
 	+ Bugfix Release
 	+ Changes
