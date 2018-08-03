@@ -1,5 +1,10 @@
 # WorldStabilizer :: Change Log
 
+* 2017-1217: 0.6 (whale_2) for KSP 1.3.1 PRE-RELEASE
+	+ Rewrote whole altitude detection system
+	+ Added debug markers for vessel top and bottom points
+	+ Added config file
+	+ Added vessel exclusions
 * 2017-1214: 0.5 (whale_2) for KSP 1.3.1 PRE-RELEASE
 	+ More safeguarding, as for some reason we can't reliably determine altitude 100% of the time
 	+ Craft still can explode, use with caution.
