@@ -1,6 +1,11 @@
 # WorldStabilizer :: Change Log
 
-* 2018-0103: 0.7 (whale_2) for KSP 1.3.1
+* 2018-0108: 0.7.1 (whale_2) for KSP 1.3.1
+	+ Bugfix Release
+	+ There should be a bit less explosions.
+	+ Changes:
+		- Fixed some part meshes being excluded when determining vessel bounds
+* 2018-0103: 0.7 (whale_2) for KSP 1.3.1 
 	+ First Public Release
 	+ Expect some bugs and/or explosions. Backup your save prior to trying this out!
 	+ Please report problems here or on KSP forums.
