@@ -2,6 +2,7 @@
 Archive
 GameData/**/Plugins/*.dll
 GameData/**/LICENSE
+GameData/**/CHANGE_LOG.md
 GameData/**/README.md
 GameData/**/*.version
 bin
