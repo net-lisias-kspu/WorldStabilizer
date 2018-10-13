@@ -757,11 +757,7 @@ namespace WorldStabilizer
 		private bool checkParked(Part p) {
 			PartModule airpark = p.Modules ["AirPark"];
 			var parked = airpark.Fields.GetValue ("Parked");
-			if (parked != null) {
-				return (bool)parked;
-			} else {
-				return false;
-			}
+			return parked != null && (bool)parked;
 		}
 			
 		internal static void printDebug(String message) {
@@ -779,8 +775,14 @@ namespace WorldStabilizer
 			// FIXME: How do I use KSPField here for configuration?
 
 			string PLUGIN_DATA = Path.Combine(KSPUtil.ApplicationRootPath, "PluginData/WorldStabilizer");
+
 			if (!Directory.Exists(PLUGIN_DATA)) Directory.CreateDirectory(PLUGIN_DATA);
-			var config = GameDatabase.Instance.GetConfigs (Path.Combine(PLUGIN_DATA, "settings")).FirstOrDefault ().config;
+			var config = GameDatabase.Instance.GetConfigs (Path.Combine(PLUGIN_DATA, "settings")).FirstOrDefault().config;
+
+			if (null == config)
+				UnityEngine.Debug.LogError("[WorldStabilizer] config is null!");
+			else
+				UnityEngine.Debug.Log("[WorldStabilizer] config is ok");
 
 			string nodeValue = config.GetValue ("stabilizationTicks");
 			if (nodeValue != null)
