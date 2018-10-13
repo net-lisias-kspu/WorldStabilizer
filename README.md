@@ -5,8 +5,8 @@ A way to counter ground collision bug in KSP. Unnoficial fork by Lisias.
 ## In a Hurry
 
 * [Latest Release](https://github.com/net-lisias-kspu/WorldStabilizer/releases)
+	+ [Binaries](https://github.com/net-lisias-kspu/WorldStabilizer/tree/Archive)
 * [Source](https://github.com/net-lisias-kspu/WorldStabilizer)
-* [Binaries](https://github.com/net-lisias-kspu/WorldStabilizer/tree/Archive)
 * [Change Log](./CHANGE_LOG.md)
 
 
