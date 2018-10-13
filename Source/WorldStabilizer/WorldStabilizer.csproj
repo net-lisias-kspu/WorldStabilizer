@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-	<PropertyGroup>
+    <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{74587238-9029-4F75-82CA-B6CB764E4910}</ProjectGuid>
     <OutputType>Library</OutputType>
-	<AppDesignerFolder>Properties</AppDesignerFolder>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WorldStabilizer</RootNamespace>
+    <BaseIntermediateOutputPath>..\..\obj</BaseIntermediateOutputPath>
     <AssemblyName>WorldStabilizer</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-	<FileAlignment>512</FileAlignment>
-	<TargetFrameworkProfile />
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug</OutputPath>
+    <OutputPath>..\..\bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -26,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release</OutputPath>
+    <OutputPath>..\..\bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -51,13 +52,13 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\LIB\managed\1.4.3\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\..\..\..\LIB\managed\1.4.3\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\LIB\managed\1.4.3\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\LIB\managed\1.4.3\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\LIB\managed\1.4.3\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\..\LIB\managed\1.4.3\Assembly-CSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

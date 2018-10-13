@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "WorldStabilizer", "WorldStabilizer\WorldStabilizer.csproj", "{F92BAFA8-1FEB-43B4-9BE6-85D5CE93ECA5}"
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "WorldStabilizer", "Source\WorldStabilizer\WorldStabilizer.csproj", "{F92BAFA8-1FEB-43B4-9BE6-85D5CE93ECA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
