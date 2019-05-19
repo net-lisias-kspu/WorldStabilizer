@@ -1,6 +1,6 @@
-# WorldStabilizer Unofficial
+# WorldStabilizer /L Unofficial
 
-A way to counter ground collision bug in KSP. Unnoficial fork by Lisias.
+A way to counter ground collision bug in KSP. Unofficial fork by Lisias.
 
 ## In a Hurry
 
