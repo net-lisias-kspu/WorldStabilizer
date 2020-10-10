@@ -2,11 +2,9 @@
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Collections;
 using System.IO;
 using UnityEngine;
-using ModuleWheels;
 
 namespace WorldStabilizer
 {
@@ -33,7 +31,7 @@ namespace WorldStabilizer
 		public static bool displayMessage = true;
 		// How long to wait for harpoon reattaching after landing gear ground contact
 		public static float harpoonReattachTimeout = 1;
-		// How often to check for landed state 
+		// How often to check for landed state
 		// (See GearHarpoonReconnector)
 		public static float checkLandedPeriod = 0.5f;
 		// If there was no ground contact on landing gear after waiting for this long
@@ -70,6 +68,8 @@ namespace WorldStabilizer
 		private List<Vessel> vesselsToMoveUp;
 
 		private List<string> excludeVessels;
+		private List<string> excludePartModules;
+		private List<string> excludeParts;
 
 
 		public static EventVoid onWorldStabilizationStartEvent;
@@ -84,19 +84,21 @@ namespace WorldStabilizer
 		}
 
 		public void Awake() {
-			
+
 			printDebug("Awake");
 
 			instance = this;
 
 			excludeVessels = new List<string>();
+			excludeParts = new List<string>();
+			excludePartModules = new List<string>();
 			configure ();
 
-			KASAPI.initialize ();
+			//KASAPI.initialize ();
 		}
 
 		public void Start() {
-			
+
 			printDebug("Start");
 			vesselTimer = new Dictionary<Guid, int> ();
 			renderer0 = new Dictionary<Guid, LineRenderer> ();
@@ -131,16 +133,16 @@ namespace WorldStabilizer
 				}
 			}
 			// tryDetachAnchor (v); // If this vessel has anchors (from Hangar), detach them
-			KASAPI.tryDetachPylon (v); // Same with KAS pylons
+			// KASAPI.tryDetachPylon (v); // Same with KAS pylons
 			// KASAPI.tryDetachHarpoon (v);
 		}
-			
+
 		public void onVesselGoOffRails(Vessel v) {
 
 			if (v.situation == Vessel.Situations.LANDED ||
 			    (stabilizeInPrelaunch && v.situation == Vessel.Situations.PRELAUNCH)) {
 
-				printDebug ("off rails: " + v.name + ": alt: " + v.altitude + "; radar alt: " + v.radarAltitude + 
+				printDebug ("off rails: " + v.name + ": alt: " + v.altitude + "; radar alt: " + v.radarAltitude +
 					"; 	 alt: " + v.protoVessel.altitude);
 				if (v.isEVA && !stabilizeKerbals) { // Kerbals are usually ok
 					return;
@@ -148,8 +150,19 @@ namespace WorldStabilizer
 				if (v.packed) { // no physics, leave it alone
 					return;
 				}
-				if (checkExcludes (v)) { // don't touch particular vessels 
+				if (checkExcludes (v)) { // don't touch particular vessels
 					return;
+				}
+
+				// missionTime seems to be not very reliable - doesn't work if the vessel wasn't touched after launch
+				printDebug($"mission time: {v.missionTime}");
+				if (v.missionTime < 3)
+				{
+					printDebug("checking if we're inside the hangar");
+					if (checkIfInsideHangar(v))
+					{
+						return;
+					}
 				}
 
 				if (count == 0) {
@@ -179,8 +192,8 @@ namespace WorldStabilizer
 			printDebug (fromString + " -> " + to.name + "(packed=" + to.packed + ")");
 
 			tryDetachAnchor (to); // If this vessel has anchors (from Hangar), detach them
-			KASAPI.tryDetachPylon (to); // Same with KAS pylons
-			KASAPI.tryDetachHarpoon (to);
+			// KASAPI.tryDetachPylon (to); // Same with KAS pylons
+			// KASAPI.tryDetachHarpoon (to);
 		}
 
 		public void FixedUpdate() {
@@ -208,14 +221,16 @@ namespace WorldStabilizer
 				}
 			}
 
-			foreach (Rigidbody rb in KASAPI.harpoonsToHold) {
-				KASAPI.holdHarpoon (rb);
-			}
+//			KAS Harpoons are out of order in KAS 1.0
+//			foreach (Rigidbody rb in KASAPI.harpoonsToHold) {
+//				KASAPI.holdHarpoon (rb);
+//			}
 		}
 
 		private void moveUp(Vessel v) {
 
 			v.ResetCollisionIgnores();
+			v.ResetGroundContact();
 
 			// TODO: Try DisableSuspension() on wheels
 
@@ -229,7 +244,7 @@ namespace WorldStabilizer
 				RayCastResult alt = GetRaycastAltitude (v, bounds [v.id].bottomPoint + up * vesselHeight, rayCastMask); // mask: ground only
 				RayCastResult alt2 = GetRaycastAltitude (v, bounds [v.id].topPoint, rayCastMask); // mask: ground only
 
-				printDebug (v.name + ": alt from top - height = " + (alt.altitude - vesselHeight) + 
+				printDebug (v.name + ": alt from top - height = " + (alt.altitude - vesselHeight) +
 					"; alt from top: " + alt + "; vessel height = " + vesselHeight + "; minDownMovement = " + minDownMovement);
 				if (alt.altitude - vesselHeight < minDownMovement) {
 
@@ -238,12 +253,12 @@ namespace WorldStabilizer
 					v.Translate (up * upMovementStep);
 					printDebug ("Moving up: " + v.name + " by " + upMovementStep);
 					upMovement += upMovementStep;
-					
+
 				} else {
 					printDebug (v.name + ": minumum downmovement reached; alt from bottom: " + alt);
 					break;
 				}
-			}	
+			}
 			printDebug (v.name + "; new alt = " + GetRaycastAltitude(v, bounds[v.id].bottomPoint, rayCastMask ) +
 				"; alt from top = " + GetRaycastAltitude (v, bounds [v.id].topPoint, rayCastMask));
 		}
@@ -258,9 +273,15 @@ namespace WorldStabilizer
 			RayCastResult alt3 = GetRaycastAltitude(v, bounds[v.id].topPoint, rayCastMask);
 
 			Vector3 referencePoint = bounds [v.id].bottomPoint;
+			// So what's wrong if we hit different colliders?
+			// We can even hit the same collider, but it will have a non-flat mesh in that point
+			//
+			// Seems like the right way would be raycasting from every downward facing point
+			// or from middle of every downward facing triangle
+
 			if (alt.collider != alt3.collider) {
-				printDebug (v.name + ": hit different colliders: " + alt + " and " + alt3 + "; using lastResortAltitude as a guard point");
-				minDownMovement = lastResortAltitude;
+				printDebug (v.name + ": hit different colliders: " + alt + " and " + alt3 ); //; using lastResortAltitude as a guard point");
+				//minDownMovement = lastResortAltitude;
 				if (alt3.altitude < alt.altitude) {
 					referencePoint = bounds [v.id].topPoint;
 					printDebug (v.name + ": reference point set to top");
@@ -275,14 +296,14 @@ namespace WorldStabilizer
 			Vector3 up = (v.transform.position - FlightGlobals.currentMainBody.transform.position).normalized;
 
 			if (downMovement < minDownMovement ) {
-				printDebug ("downmovement for " + v.name + " is below threshold (" + downMovement + "<" + 
+				printDebug ("downmovement for " + v.name + " is below threshold (" + downMovement + "<" +
 				            minDownMovement + "); leaving as is: " + downMovement);
 				return;
 			}
 
 			downMovement -= minDownMovement;
 
-			printDebug ("Moving down: " + v.name + " by " + downMovement + "; alt = " + 
+			printDebug ("Moving down: " + v.name + " by " + downMovement + "; alt = " +
 				alt.altitude + "; timer = " + vesselTimer[v.id] + "; radar alt = " + v.radarAltitude +
 				"; alt from top = " + alt3.altitude);
 			v.Translate (-downMovement * (Vector3d)up);
@@ -297,7 +318,7 @@ namespace WorldStabilizer
 		}
 
 		private void ignoreColliders(Vessel v, Collider c) {
-		
+
 			foreach (Part p in v.parts) {
 				if (p.collisionEnhancer != null) {
 					ceBehaviors [p.flightID] = p.collisionEnhancer.OnTerrainPunchThrough;
@@ -337,7 +358,7 @@ namespace WorldStabilizer
 			// This is to address such situations as:
 			// 1. Placing a vessel under the (static) roof. KSP restores it to be on top of the roof
 			// 2. Using of AirPark mod. AirPark sets vessel state to LANDED if it is left in atmosphere
-			// and KSP pins it to the ground on unpackling. 
+			// and KSP pins it to the ground on unpackling.
 
 			Vector3 up = (v.transform.position - FlightGlobals.currentMainBody.transform.position).normalized;
 			double altDiff = initialAltitude[v.id] - v.altitude;
@@ -353,12 +374,20 @@ namespace WorldStabilizer
 			else {
 				printDebug (v.name + ": no downward hit");
 			}
-			if (Physics.Raycast (bounds[v.id].topPoint, up, out upHit, v.vesselRanges.landed.unload, rayCastMask)) {
+
+			if (Physics.Raycast (bounds[v.id].topPoint, up, out upHit, v.vesselRanges.landed.unload, rayCastExtendedMask)) {
 				printDebug (v.name + ": upward hit: " + upHit + "; collider = " + upHit.collider);
 				ignoreColliders (v, upHit.collider);
+				printDebug($"uphit distance: {upHit.distance}");
+				if (upHit.distance > 0.2)
+				{
+					// FIXME: Account for suspension travel at last?
+					altDiff = 0.2;
+				}
 			}
 			else {
-				printDebug (v.name + ": no upward hit");
+				printDebug (v.name + ": no upward hit; moving up by 0.2 m just in case");
+				altDiff = 0.2;
 			}
 
 			v.Translate (up * (float)altDiff);
@@ -384,17 +413,17 @@ namespace WorldStabilizer
 				if (vesselTimer [v.id] == stabilizationTimer) {
 					// Detaching what should be detached at the very start of stabilization
 					tryDetachAnchor (v); // If this vessel has anchors (from Hangar), detach them
-					KASAPI.tryDetachPylon (v); // Same with KAS pylons
-					KASAPI.tryDetachHarpoon (v);
+					// KASAPI.tryDetachPylon (v); // Same with KAS pylons
+					// KASAPI.tryDetachHarpoon (v);
 
 					restoreInitialAltitude (v);
 
 				} else {
-					
+
 					printDebug (v.name + ": timer = " + vesselTimer [v.id] + "; moving up");
 					moveUp (v);
 					// Setting up attachment procedure early
-					KASAPI.tryAttachPylon (v);
+					// KASAPI.tryAttachPylon (v);
 					tryAttachAnchor (v);
 					scheduleHarpoonReattachment (v);
 					restoreCEBehavior (v);
@@ -410,13 +439,12 @@ namespace WorldStabilizer
 					moveDown (v);
 				}
 			}
-		
+
 			if (drawPoints) {
 				updateLR (v, bounds [v.id]);
 			}
 
-			v.ResetGroundContact();
-			v.IgnoreGForces(20);
+			v.IgnoreGForces(2);
 			v.SetWorldVelocity (Vector3.zero);
 			v.angularMomentum = Vector3.zero;
 			v.angularVelocity = Vector3.zero;
@@ -426,7 +454,7 @@ namespace WorldStabilizer
 				printDebug ("Stabilizing; v = " + v.name + "; radar alt = " + v.radarAltitude + "; timer = " + vesselTimer [v.id]);
 			}
 		}
-	
+
 		private List<PartModule> findAnchoredParts(Vessel v) {
 
 			printDebug ("Looking for anchors in " + v.name);
@@ -435,7 +463,7 @@ namespace WorldStabilizer
 			foreach (Part p in v.parts) {
 				foreach (PartModule pm in p.Modules) {
 					if (pm.moduleName == "GroundAnchor") {
-						printDebug (v.name + ": Found anchor on part " + p.name + "; attached = " + 
+						printDebug (v.name + ": Found anchor on part " + p.name + "; attached = " +
 							pm.Fields.GetValue("isAttached"));
 						if ((bool)pm.Fields.GetValue ("isAttached"))
 							anchorList.Add (pm);
@@ -494,9 +522,9 @@ namespace WorldStabilizer
 				return;
 			StartCoroutine (this.tryAttachHarpoonCoro (v));
 		}
-			
+
 		private IEnumerator tryAttachHarpoonCoro(Vessel v) {
-		
+
 			printDebug ("re-attaching harpoons in " + harpoonReattachTimeout + " sec");
 			yield return new WaitForSeconds (harpoonReattachTimeout);
 
@@ -592,7 +620,7 @@ namespace WorldStabilizer
 				get {
 					return vessel.transform.TransformPoint(localBottomPoint);
 				}
-			}     
+			}
 
 			public Vector3 localTopPoint;
 			public Vector3 topPoint {
@@ -642,7 +670,7 @@ namespace WorldStabilizer
 					foreach (MeshFilter filter in p.GetComponentsInChildren<MeshFilter>()) {
 
 						Collider[] cdr = filter.GetComponentsInChildren<Collider> ();
-						if (cdr.Length > 0 || p.Modules.Contains("ModuleWheelSuspension")) { 
+						if (cdr.Length > 0 || p.Modules.Contains("ModuleWheelSuspension")) {
 							// for whatever reason suspension needs an additional treatment
 							// TODO: Maybe address it by searching for wheel collider
 							meshes.Add (new Pair<Transform, Mesh>(filter.transform,  filter.mesh));
@@ -665,8 +693,8 @@ namespace WorldStabilizer
 								closestVert = worldVertPoint;
 								downwardFurthestPart = p;
 
-								// TODO: Not used at the moment, but we might infer amount of 
-								// TODO: upward movement from this 
+								// TODO: Not used at the moment, but we might infer amount of
+								// TODO: upward movement from this
 								// If this is a landing gear, account for suspension compression
 								/*if (p.Modules.Contains ("ModuleWheelSuspension")) {
 									ModuleWheelSuspension suspension = p.GetComponent<ModuleWheelSuspension> ();
@@ -721,7 +749,7 @@ namespace WorldStabilizer
 			}
 		}
 
-		private RayCastResult GetRaycastAltitude(Vessel v, Vector3 originPoint, int layerMask) 
+		private RayCastResult GetRaycastAltitude(Vessel v, Vector3 originPoint, int layerMask)
 		{
 			RaycastHit hit;
 			Vector3 up = (v.transform.position - FlightGlobals.currentMainBody.transform.position).normalized;
@@ -737,19 +765,30 @@ namespace WorldStabilizer
 
 		private bool checkExcludes(Vessel v) {
 			foreach (Part p in v.parts) {
-				if (p.Modules.Contains ("LaunchClamp"))
-					return true;
-				if (p.Modules.Contains ("FlagSite"))
-					return true;
 				if (excludeVessels.Contains(v.GetName())) {
-					printDebug(v.name + ": in exclusion list");
+					printDebug($"Vessel {v.name} is in exclusion list");
+					return true;
+				}
+				if (excludeParts.Contains(p.name))
+				{
+					printDebug($"Part {p.name} is in exclusion list");
+					return true;
+				}
+				if (
+					p.Modules.GetModules<PartModule>().Any(m => excludePartModules.Contains(m.moduleName)))
+				{
+					printDebug($"Part {p.name} contains PartModule from exclusion list");
+					foreach (PartModule mod in p.Modules.GetModules<PartModule>().Where(m => excludePartModules.Contains(m.moduleName)))
+					{
+						printDebug($"Excluded Module: {mod.moduleName}");
+					}
 					return true;
 				}
 				if (p.Modules.Contains("AirPark") && checkParked (p)) {
 					return true;
 				}
 				// TODO: Check if there's KAS port in attached, but undocked state
-				// TODO: Check if there's KAS winch in attached, but undocked state 
+				// TODO: Check if there's KAS winch in attached, but undocked state
 			}
 			return false;
 		}
@@ -759,7 +798,58 @@ namespace WorldStabilizer
 			var parked = airpark.Fields.GetValue ("Parked");
 			return parked != null && (bool)parked;
 		}
-			
+
+		// Find out if we're inside hangar
+		private bool checkIfInsideHangar(Vessel v)
+		{
+			// RaycastAll to 6 directions, if two or more hit the same part and this part has
+			// "Hangar" module, we're inside the hangar
+			Vector3[] directions =
+				{Vector3.up, Vector3.down, Vector3.left, Vector3.right, Vector3.back, Vector3.forward};
+
+			int surrounding = 0;
+			foreach (Vector3 vec in directions)
+			{
+				Part p = getClosestForeignPart(v, vec);
+				if (p == null || !p.Modules.Contains("Hangar"))
+				{
+					continue;
+				}
+				surrounding ++;
+			}
+
+			if (surrounding < 2)
+			{
+				printDebug("doesn't look like we're inside the hangar");
+				return false;
+			}
+
+			printDebug($"surrounded by hangar from {surrounding} directions");
+			return true;
+		}
+
+		private Part getClosestForeignPart(Vessel v, Vector3 direction)
+		{
+			float distance = 1000f;
+			Part closest = null;
+			foreach (RaycastHit hit in Physics.RaycastAll(v.CoM, direction, 1000, 1))
+			{
+				Part p = hit.collider.gameObject.GetComponentInParent<Part>();
+				if (p.vessel == v)
+				{
+					continue;
+				}
+
+				if (hit.distance < distance)
+				{
+					distance = hit.distance;
+					closest = p;
+				}
+			}
+			printDebug($"closest part for direction {direction}: {closest}, distance: {distance}");
+			return closest;
+		}
+
 		internal static void printDebug(String message) {
 
 			if (!debug)
@@ -819,7 +909,7 @@ namespace WorldStabilizer
 			nodeValue = config.GetValue ("debug");
 			if (nodeValue != null)
 				debug = Boolean.Parse (nodeValue);
-			
+
 			nodeValue = config.GetValue ("displayMessage");
 			if (nodeValue != null)
 				displayMessage = Boolean.Parse (nodeValue);
@@ -844,6 +934,16 @@ namespace WorldStabilizer
 			if (nodeValue != null) {
 				foreach(string exc in nodeValue.Split (','))
 					excludeVessels.Add(exc.Trim());
+			}
+			nodeValue = config.GetValue ("excludeParts");
+			if (nodeValue != null) {
+				foreach(string exc in nodeValue.Split (','))
+					excludeParts.Add(exc.Trim());
+			}
+			nodeValue = config.GetValue ("excludePartModules");
+			if (nodeValue != null) {
+				foreach(string exc in nodeValue.Split (','))
+					excludePartModules.Add(exc.Trim());
 			}
 		}
 	}
