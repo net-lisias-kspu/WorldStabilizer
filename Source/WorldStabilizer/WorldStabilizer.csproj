@@ -49,9 +49,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>cp "$(TargetPath)" "$(SolutionDir)/GameData/WorldStabilizer/Plugins"</PostBuildEvent>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Assembly-CSharp">
@@ -73,4 +70,7 @@
       <LastGenOutput>Version.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent></PostBuildEvent>
+  </PropertyGroup>
 </Project>
