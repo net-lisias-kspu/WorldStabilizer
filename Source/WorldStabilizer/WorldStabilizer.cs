@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
 using System.IO;
+
 using UnityEngine;
 
 namespace WorldStabilizer
@@ -92,7 +93,7 @@ namespace WorldStabilizer
 			excludePartModules = new List<string>();
 			configure ();
 
-			//KASAPI.initialize ();
+			KASAPI.initialize ();
 		}
 
 		public void Start() {
@@ -130,9 +131,9 @@ namespace WorldStabilizer
 					renderer1 [v.id].gameObject.DestroyGameObject ();
 				}
 			}
-			// tryDetachAnchor (v); // If this vessel has anchors (from Hangar), detach them
-			// KASAPI.tryDetachPylon (v); // Same with KAS pylons
-			// KASAPI.tryDetachHarpoon (v);
+			//this.tryDetachAnchor (v); // If this vessel has anchors (from Hangar), detach them
+			//KASAPI.tryDetachPylon (v); // Same with KAS pylons
+			//KASAPI.tryDetachHarpoon (v);
 		}
 
 		public void onVesselGoOffRails(Vessel v) {
@@ -188,9 +189,9 @@ namespace WorldStabilizer
 			string fromString = from != null ? (from.name + "(packed=" + from.packed + ")") : "non-vessel";
 			Log.info("{0} -> {1}(packed={2})", fromString, to.name, to.packed);
 
-			tryDetachAnchor (to); // If this vessel has anchors (from Hangar), detach them
-			// KASAPI.tryDetachPylon (to); // Same with KAS pylons
-			// KASAPI.tryDetachHarpoon (to);
+			this.tryDetachAnchor (to); // If this vessel has anchors (from Hangar), detach them
+			KASAPI.tryDetachPylon (to); // Same with KAS pylons
+			KASAPI.tryDetachHarpoon (to);
 		}
 
 		public void FixedUpdate() {
@@ -220,9 +221,10 @@ namespace WorldStabilizer
 			}
 
 //			KAS Harpoons are out of order in KAS 1.0
-//			foreach (Rigidbody rb in KASAPI.harpoonsToHold) {
-//				KASAPI.holdHarpoon (rb);
-//			}
+			if (!KASAPI.isNewKsp)
+				foreach (Rigidbody rb in KASAPI.harpoonsToHold) {
+					KASAPI.holdHarpoon (rb);
+				}
 		}
 
 		private void moveUp(Vessel v) {
@@ -410,8 +412,8 @@ namespace WorldStabilizer
 				if (vesselTimer [v.id] == stabilizationTimer) {
 					// Detaching what should be detached at the very start of stabilization
 					tryDetachAnchor (v); // If this vessel has anchors (from Hangar), detach them
-					// KASAPI.tryDetachPylon (v); // Same with KAS pylons
-					// KASAPI.tryDetachHarpoon (v);
+					KASAPI.tryDetachPylon (v); // Same with KAS pylons
+					KASAPI.tryDetachHarpoon (v);
 
 					restoreInitialAltitude (v);
 
@@ -420,7 +422,7 @@ namespace WorldStabilizer
 					Log.detail("{0}: timer = {1}; moving up", v.name, vesselTimer[v.id]);
 					moveUp (v);
 					// Setting up attachment procedure early
-					// KASAPI.tryAttachPylon (v);
+					KASAPI.tryAttachPylon (v);
 					tryAttachAnchor (v);
 					scheduleHarpoonReattachment (v);
 					restoreCEBehavior (v);

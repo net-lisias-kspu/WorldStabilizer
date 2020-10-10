@@ -27,6 +27,8 @@ namespace WorldStabilizer
 		public static Dictionary<PartModule, JointBackup> springs;
 		public static HashSet<Rigidbody> harpoonsToHold = null;
 
+		public static readonly bool isNewKsp = KSPe.Util.KSP.Version.Current >= KSPe.Util.KSP.Version.FindByVersion(1,8,0);
+
 		public KASAPI ()
 		{
 		}
@@ -92,8 +94,7 @@ namespace WorldStabilizer
 		}
 
 		public static void tryDetachPylon(Vessel v) {
-
-			if(!hasKISAddOn)
+			if(!hasKISAddOn || isNewKsp)
 				return;
 			List<PartModule> attachedPylons = findAttachedKASPylons (v);
 			if (attachedPylons.Count > 0) {
@@ -233,7 +234,7 @@ namespace WorldStabilizer
 			//   - find winch connected to this attached harpoon 
 			//   - set the winch to undocked state and release it 
 			//   - upon ground contact set back to docked state
-			if (!hasKASAddOn)
+			if (!hasKASAddOn || isNewKsp)
 				return;
 
 			List<PartModule> stuckHarpoons = findStuckHarpoons (v);
