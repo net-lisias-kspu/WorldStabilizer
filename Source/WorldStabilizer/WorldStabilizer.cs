@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
-using System.IO;
 
 using UnityEngine;
+
+using Asset = KSPe.IO.Asset<WorldStabilizer.Startup>;
+using Data = KSPe.IO.Data<WorldStabilizer.Startup>;
 
 namespace WorldStabilizer
 {
@@ -75,6 +76,8 @@ namespace WorldStabilizer
 		public static EventVoid onWorldStabilizedEvent;
 
 		public static WorldStabilizer instance;
+
+		private static Data.ConfigNode SETTINGS = Data.ConfigNode.For("WorldStabilizer", "settings.cfg");
 
 		public WorldStabilizer ()
 		{
@@ -849,10 +852,19 @@ namespace WorldStabilizer
 
 			// FIXME: How do I use KSPField here for configuration?
 
-			string PLUGIN_DATA = Path.Combine(KSPUtil.ApplicationRootPath, "PluginData/WorldStabilizer");
+			if (!SETTINGS.IsLoadable)
+			{
+				Asset.ConfigNode defaults = Asset.ConfigNode.For("WorldStabilizer", "settings.cfg");
+				if (!defaults.IsLoadable)
+				{
+					Log.error("Where is the default settings.cfg? World Stabilizer will not work properly without it!");
+					return;
+				}
+				SETTINGS.Clear();
+				SETTINGS.Save(defaults.Load().Node);
+			}
 
-			if (!Directory.Exists(PLUGIN_DATA)) Directory.CreateDirectory(PLUGIN_DATA);
-			var config = GameDatabase.Instance.GetConfigs (Path.Combine(PLUGIN_DATA, "settings")).FirstOrDefault().config;
+			ConfigNode config = SETTINGS.Load().Node;
 
 			if (null == config)
 				Log.error("config is null!");
