@@ -45,6 +45,7 @@
       <DependentUpon>Version.tt</DependentUpon>
     </Compile>
     <Compile Include="Log.cs" />
+    <Compile Include="ModuleManagerSupport.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
