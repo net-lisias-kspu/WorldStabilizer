@@ -23,8 +23,6 @@ namespace WorldStabilizer
 		public static bool stabilizeKerbals = false;
 		// Should we recalculate vessel bounds before every attempt to move it
 		public static bool recalculateBounds = true;
-		// Should we write debug info
-		public static bool debug = true;
 		// Should we draw markers around topmost and bottommost vessel points
 		public static bool drawPoints = true;
 		// Should we display 'World has been stabilized' message
@@ -142,7 +140,7 @@ namespace WorldStabilizer
 			if (v.situation == Vessel.Situations.LANDED ||
 			    (stabilizeInPrelaunch && v.situation == Vessel.Situations.PRELAUNCH)) {
 
-				Log.detail("off rails: {0}: alt: {1}; radar alt: {2}; alt: {3}", v.name, v.altitude, v.radarAltitude, v.protoVessel.altitude);
+				Log.info("off rails: {0}: alt: {1}; radar alt: {2}; alt: {3}", v.name, v.altitude, v.radarAltitude, v.protoVessel.altitude);
 				if (v.isEVA && !stabilizeKerbals) { // Kerbals are usually ok
 					return;
 				}
@@ -188,7 +186,7 @@ namespace WorldStabilizer
 			}
 
 			string fromString = from != null ? (from.name + "(packed=" + from.packed + ")") : "non-vessel";
-			Log.detail("{0} -> {1}(packed={2})", fromString, to.name, to.packed);
+			Log.info("{0} -> {1}(packed={2})", fromString, to.name, to.packed);
 
 			tryDetachAnchor (to); // If this vessel has anchors (from Hangar), detach them
 			// KASAPI.tryDetachPylon (to); // Same with KAS pylons
@@ -213,6 +211,7 @@ namespace WorldStabilizer
 						if (count == 0) {
 							if (displayMessage) {
 								ScreenMessages.PostScreenMessage ("World has been stabilized");
+								Log.info("World has been stabilized");
 							}
 							onWorldStabilizedEvent.Fire ();
 						}
@@ -854,9 +853,9 @@ namespace WorldStabilizer
 			var config = GameDatabase.Instance.GetConfigs (Path.Combine(PLUGIN_DATA, "settings")).FirstOrDefault().config;
 
 			if (null == config)
-				UnityEngine.Debug.LogError("[WorldStabilizer] config is null!");
+				Log.error("config is null!");
 			else
-				UnityEngine.Debug.Log("[WorldStabilizer] config is ok");
+				Log.detail("config is ok");
 
 			string nodeValue = config.GetValue ("stabilizationTicks");
 			if (nodeValue != null)
@@ -889,10 +888,6 @@ namespace WorldStabilizer
 			nodeValue = config.GetValue ("recalculateBounds");
 			if (nodeValue != null)
 				recalculateBounds = Boolean.Parse (nodeValue);
-
-			nodeValue = config.GetValue ("debug");
-			if (nodeValue != null)
-				debug = Boolean.Parse (nodeValue);
 
 			nodeValue = config.GetValue ("displayMessage");
 			if (nodeValue != null)
