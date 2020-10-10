@@ -20,16 +20,16 @@ namespace WorldStabilizer
 				return;
 			moduleKISItem = part.Modules ["ModuleKISItem"];
 			Invoke ("finalCheck", WorldStabilizer.checkLandedTimeout);
-			WorldStabilizer.printDebug ("KASReconnector: KIS Module found for part " + part.name + " (" + moduleKISItem + ")");
+			Log.detail("KASReconnector: KIS Module found for part {0} ({1})", part.name, moduleKISItem);
 		}
 
 		protected override void reattach() {
 			
 			if (moduleKISItem != null) {
-				WorldStabilizer.printDebug ("KASReconnector: re-attaching pylon to the ground");
+				Log.detail("KASReconnector: re-attaching pylon to the ground");
 				KASAPI.groundAttach (moduleKISItem);
 			} else {
-				WorldStabilizer.printDebug ("KASReconnector: module is null");
+				Log.detail("KASReconnector: module is null");
 			}
 		}
 	}

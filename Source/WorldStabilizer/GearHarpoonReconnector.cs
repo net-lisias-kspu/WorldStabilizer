@@ -17,7 +17,7 @@ namespace WorldStabilizer
 		public override void OnAwake ()
 		{
 			base.OnAwake ();
-			WorldStabilizer.printDebug ("GearHarpoonReconnector: awaking");
+			Log.dbg("GearHarpoonReconnector: awaking");
 
 			// Still no idea how to reliably receive OnCollisionEnter event on wheels
 			// so polling state each 0.5s and giving up in 10s
@@ -33,7 +33,7 @@ namespace WorldStabilizer
 
 		protected void checkLanded() {
 			if (wheelBase.isGrounded) {
-				WorldStabilizer.printDebug ("GearHarpoonReconnector: detected landed state on part " + part.name);
+				Log.detail("GearHarpoonReconnector: detected landed state on part {0}", part.name);
 				reattach ();
 				selfDestructTimer = 3;
 			}
@@ -43,7 +43,7 @@ namespace WorldStabilizer
 
 			if (reattached)
 				return;
-			WorldStabilizer.printDebug ("GearHarpoonReconnector: re-attaching to the ground; part = " + part.name);
+			Log.detail("GearHarpoonReconnector: re-attaching to the ground; part = {0}", part.name);
 			WorldStabilizer.instance.tryAttachHarpoon (vessel);
 			reattached = true;
 		}

@@ -21,7 +21,7 @@ namespace WorldStabilizer
 			if (!part.Modules.Contains ("GroundAnchor"))
 				return;
 			moduleHangar = part.Modules ["GroundAnchor"];
-			WorldStabilizer.printDebug ("Hangar Module found for part " + part.name + " (" + moduleHangar + ")");
+			Log.detail("Hangar Module found for part {0} ({1})", part.name, moduleHangar);
 		}
 
 		protected override void reattach() {
@@ -32,7 +32,7 @@ namespace WorldStabilizer
 					collisionDetected = true;
 				}
 			} else {
-				WorldStabilizer.printDebug ("Hangar module is null");
+				Log.detail("Hangar module is null");
 			}
 		}
 	}

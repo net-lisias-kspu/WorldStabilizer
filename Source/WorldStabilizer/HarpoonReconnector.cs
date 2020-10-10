@@ -15,7 +15,7 @@ namespace WorldStabilizer
 		public override void OnAwake ()
 		{
 			base.OnAwake ();
-			WorldStabilizer.printDebug ("HarpoonReconnector: awaking");
+			Log.dbg("HarpoonReconnector: awaking");
 			Invoke ("finalCheck", WorldStabilizer.checkLandedTimeout);
 		}
 
@@ -23,7 +23,7 @@ namespace WorldStabilizer
 
 			if (reattached)
 				return;
-			WorldStabilizer.printDebug ("HarpoonReconnector: re-attaching to the ground; part = " + part.name);
+			Log.detail("HarpoonReconnector: re-attaching to the ground; part = {0}", part.name);
 			KASAPI.tryAttachHarpoonImmediately (vessel);
 			reattached = true;
 		}

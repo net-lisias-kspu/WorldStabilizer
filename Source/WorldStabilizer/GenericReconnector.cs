@@ -15,7 +15,7 @@ namespace WorldStabilizer
 			if (selfDestructTimer > 0)
 				selfDestructTimer--;
 			if (selfDestructTimer == 0) {
-				WorldStabilizer.printDebug ("Removing reconnector module");
+				Log.detail("Removing reconnector module");
 				CancelInvoke ();
 				part.RemoveModule (this);
 			}
@@ -34,7 +34,7 @@ namespace WorldStabilizer
 
 		protected void finalCheck() {
 
-			WorldStabilizer.printDebug ("KASReconnector: GroundContact = " + part.GroundContact);
+			Log.detail("KASReconnector: GroundContact = {0}", part.GroundContact);
 			if (part.GroundContact) {
 				reattach ();
 			}

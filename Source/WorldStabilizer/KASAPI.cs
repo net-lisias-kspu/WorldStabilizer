@@ -40,7 +40,7 @@ namespace WorldStabilizer
 
 		public static void initialize() {
 			
-			WorldStabilizer.printDebug ("Looking for KIS/KAS");
+			Log.detail("Looking for KIS/KAS");
 			KISType = findKISModule ();
 			if (KISType != null) {
 
@@ -49,14 +49,14 @@ namespace WorldStabilizer
 
 				if (groundAttachMethod != null && groundDetachMethod != null) {
 					hasKISAddOn = true;
-					WorldStabilizer.printDebug ("KIS found");
+					Log.detail("KIS found");
 				}
 			}
 
 			KASType = findKASModule ();
 			if (KASType != null) {
 				hasKASAddOn = true;
-				WorldStabilizer.printDebug ("KAS found");
+				Log.detail("KAS found");
 			}
 
 			if (harpoons == null)
@@ -101,7 +101,7 @@ namespace WorldStabilizer
 				foreach (PartModule pm in pylons[v.id]) {
 					groundDetach (pm);
 				}
-				WorldStabilizer.printDebug ("Added " + pylons [v.id].Count + " for vessel " + v.name + "; id=" + v.id); 
+				Log.detail("Added {0} for vessel {1}; id={2}", pylons[v.id].Count, v.name, v.id); 
 			}
 		}
 
@@ -112,9 +112,9 @@ namespace WorldStabilizer
 				// Adding parasite module to the part
 				// It will re-activate ground conneciton upon ground contact
 				// and destroy itself afterwards
-				WorldStabilizer.printDebug("partModule: " + pm);
-				WorldStabilizer.printDebug("part: " + pm.name);
-				WorldStabilizer.printDebug("Adding KASPylonReconnector to " + pm.part.name);
+				Log.detail("partModule: {0}", pm);
+				Log.detail("part: {1}", pm.name);
+				Log.detail("Adding KASPylonReconnector to {0}", pm.part.name);
 				pm.part.AddModule("KASPylonReconnector", true);
 			}
 			pylons.Remove (v.id);
@@ -122,7 +122,7 @@ namespace WorldStabilizer
 
 
 		public static List<PartModule> findAttachedKASPylons(Vessel v) {
-			WorldStabilizer.printDebug ("Looking for KAS pylons attached to the ground in " + v.name);
+			Log.detail("Looking for KAS pylons attached to the ground in ", v.name);
 			List<PartModule> pylonList = new List<PartModule> ();
 
 			foreach (Part p in v.parts) {
@@ -130,19 +130,19 @@ namespace WorldStabilizer
 					continue;
 				PartModule pm = p.Modules ["ModuleKISItem"];
 				if (isStaticAttached(pm)) {
-					WorldStabilizer.printDebug (v.name + ": Found static attached KAS part " + p.name);
+					Log.detail("{0}: Found static attached KAS part {1}", v.name, p.name);
 					pylonList.Add (pm);
 				}
 			}
 
-			WorldStabilizer.printDebug ("Found " + pylonList.Count + " pylons");
+			Log.detail("Found {0} pylons", pylonList.Count);
 			return pylonList;
 		}
 
 		public static bool isStaticAttached(PartModule pylon) {
 			object val = pylon.Fields.GetValue ("staticAttached");
 			if (val == null) {
-				WorldStabilizer.printDebug("No 'staticAttached' field in part " + pylon.part.name);
+				Log.detail("No 'staticAttached' field in part {0}", pylon.part.name);
 				return false;
 			}
 			return (bool)val;
@@ -153,13 +153,13 @@ namespace WorldStabilizer
 		}
 
 		public static void groundDetach(PartModule pylon) {
-			WorldStabilizer.printDebug ("detaching pylon from the ground");
+			Log.detail("detaching pylon from the ground");
 			groundDetachMethod.Invoke (pylon, null);
 		}
 
 		public static List<PartModule> findStuckHarpoons(Vessel v) {
 
-			WorldStabilizer.printDebug ("Looking for harpoons stuck in the ground in " + v.name);
+			Log.detail("Looking for harpoons stuck in the ground in {0}", v.name);
 			List<PartModule> harpoonList = new List<PartModule> ();
 
 			foreach (Part p in v.parts) {
@@ -169,10 +169,10 @@ namespace WorldStabilizer
 
 				if (!harpoonHasStaticJoint(pm))
 					continue;
-				WorldStabilizer.printDebug ("Adding haroon " + pm.GetInstanceID ());
+				Log.detail("Adding haroon {0}", pm.GetInstanceID ());
 				harpoonList.Add (pm);
 			}
-			WorldStabilizer.printDebug ("Found " + harpoonList.Count + " stuck harpoons");
+			Log.detail("Found {0} stuck harpoons", harpoonList.Count);
 			return harpoonList;
 		}
 
@@ -181,7 +181,7 @@ namespace WorldStabilizer
 			FieldInfo attachModeField = harpoon.GetType ().GetField ("attachMode");
 			object attachMode = attachModeField.GetValue (harpoon);
 			if (attachMode == null) {
-				WorldStabilizer.printDebug ("No attachMode field in harpoon part " + harpoon.part.name);
+				Log.detail("No attachMode field in harpoon part {0}", harpoon.part.name);
 				return false;
 			}
 			FieldInfo staticJointField = attachMode.GetType ().GetField ("StaticJoint");
@@ -193,7 +193,7 @@ namespace WorldStabilizer
 			PartModule modulePort = harpoon.part.Modules ["KASModulePort"];
 			FieldInfo winchField = modulePort.GetType ().GetField ("winchConnected");
 			if (winchField == null) {
-				WorldStabilizer.printDebug ("Can't find connected winch for part " + harpoon.part.name);
+				Log.detail("Can't find connected winch for part {0}", harpoon.part.name);
 				return null;
 			}
 			return (PartModule)winchField.GetValue (modulePort);
@@ -242,7 +242,7 @@ namespace WorldStabilizer
 				winches [v.id] = new List<PartModule> ();
 
 				foreach (PartModule harpoon in harpoons[v.id]) {
-					WorldStabilizer.printDebug ("Detaching harpoon " + harpoon.GetInstanceID ());
+					Log.detail("Detaching harpoon {0}", harpoon.GetInstanceID());
 
 					// Black Magic starts here
 					Type attachTypeEnum = Type.GetType ("KAS.KASModuleAttachCore+AttachType,KAS");
@@ -253,7 +253,7 @@ namespace WorldStabilizer
 
 					PartModule winch = findConnectedWinch (harpoon);
 					if (winch == null || !isPlugDocked (winch)) {
-						WorldStabilizer.printDebug ("Can't find winch for harpoon " + harpoon.GetInstanceID ());
+						Log.detail("Can't find winch for harpoon {0}", harpoon.GetInstanceID());
 						continue;
 					}
 
@@ -271,11 +271,11 @@ namespace WorldStabilizer
 						springJoint.maxDistance += 3f;
 
 					} else {
-						WorldStabilizer.printDebug ("Can't find springJoint in winch " + winch.GetInstanceID ());
+						Log.detail("Can't find springJoint in winch {0}", winch.GetInstanceID());
 					}
 
 
-					WorldStabilizer.printDebug ("Adding winch " + winch.GetInstanceID () + " for harpoon " + harpoon.GetInstanceID ());
+					Log.detail("Adding winch {0} for harpoon {1}", winch.GetInstanceID(), harpoon.GetInstanceID());
 					toggleDockedState (winch);
 					releaseWinchReel (winch, true);
 					winches [v.id].Add (winch);
@@ -290,11 +290,11 @@ namespace WorldStabilizer
 		public static void tryAttachHarpoonImmediately(Vessel v) {
 
 			if (!winches.ContainsKey (v.id)) {
-				WorldStabilizer.printDebug ("No winches for vessel " + v.name);
+				Log.detail("No winches for vessel {0}", v.name);
 				return;
 			}
 
-			WorldStabilizer.printDebug ("re-attaching harpoons now");
+			Log.detail("re-attaching harpoons now");
 			foreach (PartModule harpoon in harpoons[v.id]) {
 				MethodInfo attachMethodInfo = harpoon.GetType ().GetMethod ("AttachStaticGrapple");
 				attachMethodInfo.Invoke (harpoon, null);
@@ -304,7 +304,7 @@ namespace WorldStabilizer
 
 				SpringJoint springJoint = winch.part.gameObject.GetComponentInChildren<SpringJoint> ();
 				if (springJoint == null) {
-					WorldStabilizer.printDebug ("No springJoint found for winch " + winch.GetInstanceID ());
+					Log.detail("No springJoint found for winch {0}", winch.GetInstanceID());
 					continue;
 				}
 				if (springs.ContainsKey (winch)) {
@@ -314,7 +314,7 @@ namespace WorldStabilizer
 					springJoint.maxDistance = springs [winch].maxDistance;
 				}
 				else
-					WorldStabilizer.printDebug ("Can't find original spring force for winch " + winch.GetInstanceID ());
+					Log.detail("Can't find original spring force for winch {0}", winch.GetInstanceID());
 				releaseWinchReel (winch, false);
 				toggleDockedState (winch);
 			}
