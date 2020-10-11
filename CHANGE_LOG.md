@@ -1,5 +1,7 @@
 # WorldStabilizer :: Change Log
 
+* 2018-1020: 0.9.3 (whale_2) for KSP 1.5
+	+ Recompile against 1.5.1, AVC version update
 * 2019-0519: 0.9.4.1 (lisias) for KSP >= 1.4
 	+  Updating some values to cope to KSP 1.5.1
 	+  Bumping version to match upstream's.
