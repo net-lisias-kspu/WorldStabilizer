@@ -9,13 +9,13 @@
 * 2019-0807: 0.9.5 (whale_2) for KSP 1.7.3
 	+ This release fixes rare case when you launch a craft from Hangar and it falls through the floor.
 	+ The fix work in following way - vessel just launched from Hangar is not being stabilized (so far it appears stable enough so doesn't need any additional babysitting).
+* 2019-0519: 0.9.4.1 (lisias) for KSP >= 1.4
+	+  Updating some values to cope to KSP 1.5.1
+	+  Bumping version to match upstream's.
 * 2019-0321: 0.9.4 (whale_2) for KSP 1.5
 	+ Now supporting multi-build for several game versions. Chances are I broke CKAN and/or AVC with this release.
 * 2018-1020: 0.9.3 (whale_2) for KSP 1.5
 	+ Recompile against 1.5.1, AVC version update
-* 2019-0519: 0.9.4.1 (lisias) for KSP >= 1.4
-	+  Updating some values to cope to KSP 1.5.1
-	+  Bumping version to match upstream's.
 * 2018-0802: 0.9.2.1 (lisias) for KSP 1.4.x
 	+  Moving settings into <KSP_ROOT>/PluginData .
 * 2018-0510: 0.9.2 (whale_2) for KSP 1.4.3
