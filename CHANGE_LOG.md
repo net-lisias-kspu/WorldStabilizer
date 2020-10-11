@@ -1,5 +1,7 @@
 # WorldStabilizer :: Change Log
 
+* 2019-0321: 0.9.4 (whale_2) for KSP 1.5
+	+ Now supporting multi-build for several game versions. Chances are I broke CKAN and/or AVC with this release.
 * 2018-1020: 0.9.3 (whale_2) for KSP 1.5
 	+ Recompile against 1.5.1, AVC version update
 * 2019-0519: 0.9.4.1 (lisias) for KSP >= 1.4
