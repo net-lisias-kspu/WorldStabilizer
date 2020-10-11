@@ -1,5 +1,9 @@
 # WorldStabilizer :: Change Log
 
+* 2019-1202: 0.9.7 (whale_2) for KSP 1.7.3
+	+ Added configurable parts and modules excludes list
+	+ Fixes for Breaking Ground expansion - ground experiments are excluded from stabilizing
+	+ Also fixed Mk1 capsule not recognized as landed when launched from Level 1-2 pads
 * 2019-1022: 0.9.6 (whale_2) for KSP 1.7.3
 	+ Some minor adjustments and 1.8.0 build
 * 2019-0807: 0.9.5 (whale_2) for KSP 1.7.3
