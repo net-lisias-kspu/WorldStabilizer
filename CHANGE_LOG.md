@@ -1,5 +1,7 @@
 # WorldStabilizer :: Change Log
 
+* 2019-1022: 0.9.6 (whale_2) for KSP 1.7.3
+	+ Some minor adjustments and 1.8.0 build
 * 2019-0807: 0.9.5 (whale_2) for KSP 1.7.3
 	+ This release fixes rare case when you launch a craft from Hangar and it falls through the floor.
 	+ The fix work in following way - vessel just launched from Hangar is not being stabilized (so far it appears stable enough so doesn't need any additional babysitting).
