@@ -77,7 +77,7 @@ namespace WorldStabilizer
 
 		public static WorldStabilizer instance;
 
-		private static Data.ConfigNode SETTINGS = Data.ConfigNode.For("WorldStabilizer", "settings.cfg");
+		private static readonly Data.ConfigNode SETTINGS = Data.ConfigNode.For("WorldStabilizer", "settings.cfg");
 
 		public WorldStabilizer ()
 		{
