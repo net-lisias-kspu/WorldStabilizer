@@ -1,5 +1,7 @@
 # World Stabilizer /L Unleashed :: Changes
 
+* 2021-1031: 0.9.8.0 (lisias) for KSP >= 1.3
+	+ Recompiling (**hate** this word) agains KSPe v2.4 
 * 2019-1202: 0.9.7.1 (lisias) for KSP >= 1.3
 	+ Using KSPe logging, installment checks, abstract file system facilities
 	+ Making the thing working on from KSP 1.3 to the newest
