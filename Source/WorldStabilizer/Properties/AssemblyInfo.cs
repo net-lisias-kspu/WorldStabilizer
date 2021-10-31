@@ -4,13 +4,13 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle ("WorldStabilizer")]
-[assembly: AssemblyDescription ("")]
+[assembly: AssemblyTitle ("World Stabilizer /L Unleashed")]
+[assembly: AssemblyDescription ("A way to counter ground collision bug in KSP.")]
 [assembly: AssemblyConfiguration ("")]
-[assembly: AssemblyCompany ("")]
-[assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("whale")]
-[assembly: AssemblyTrademark ("")]
+[assembly: AssemblyCompany (WorldStabilizer.LegalMamboJambo.Company)]
+[assembly: AssemblyProduct (WorldStabilizer.LegalMamboJambo.Product)]
+[assembly: AssemblyCopyright (WorldStabilizer.LegalMamboJambo.Copyright)]
+[assembly: AssemblyTrademark (WorldStabilizer.LegalMamboJambo.Trademark)]
 [assembly: AssemblyCulture ("")]
 
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".

@@ -1,4 +1,21 @@
-﻿using System;
+﻿/*
+	This file is part of World Stabilizer /L Unleashed
+		© 2019-2021 Lisias T : http://lisias.net <support@lisias.net>
+		© 2017-2019 whale_2
+
+	THIS FILE is licensed to you under:
+
+		* WTFPL - http://www.wtfpl.net
+			* Everyone is permitted to copy and distribute verbatim or modified
+ 				copies of this license document, and changing it is allowed as long
+				as the name is changed.
+
+	THIS FILE is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*/
+
+using System;
 using System.Diagnostics;
 
 #if DEBUG

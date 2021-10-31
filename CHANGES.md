@@ -1,4 +1,4 @@
-# WorldStabilizer :: Changes
+# World Stabilizer /L Unleashed :: Changes
 
 * 2019-1202: 0.9.7.1 (lisias) for KSP >= 1.3
 	+ Using KSPe logging, installment checks, abstract file system facilities

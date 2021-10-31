@@ -23,16 +23,13 @@
 	If not, see <https://www.gnu.org/licenses/>.
 
 */
-using System.Collections.Generic;
-
 namespace WorldStabilizer
 {
-	public static class ModuleManagerSupport
+	public static class LegalMamboJambo
 	{
-		public static IEnumerable<string> ModuleManagerAddToModList()
-		{
-			string[] r = {typeof(ModuleManagerSupport).Namespace};
-			return r;
-		}
+		public const string Company = "/L Aerospace/KSP Division";
+		public const string Copyright = "© 2019-2021 LisiasT";
+		public const string Product = "WorldStabilizer";
+		public const string Trademark = "WorldStabilizer™ by whale_2, /L Unleashed™ by LisiasT";
 	}
 }

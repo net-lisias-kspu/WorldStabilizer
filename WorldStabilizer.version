@@ -1,6 +1,6 @@
 {
-	"NAME"		: "World Stabilizer /L Unofficial",
-	"URL"		: "https://raw.githubusercontent.com/net-lisias-kspu/WorldStabilizer/master/GameData/WorldStabilizer/Plugins/WorldStabilizer.version",
+	"NAME"		: "World Stabilizer /L Unleashed",
+	"URL"		: "https://raw.githubusercontent.com/net-lisias-kspu/WorldStabilizer/master/WorldStabilizer.version",
 	"DOWNLOAD"	: "https://github.com/net-lisias-kspu/WorldStabilizer/releases",
 	"CHANGE_LOG"	: "https://raw.githubusercontent.com/net-lisias-kspu/WorldStabilizer/master/CHANGE_LOG.md",
 	"CHANGE_LOG_URL": "https://raw.githubusercontent.com/net-lisias-kspu/WorldStabilizer/master/CHANGES.md",
