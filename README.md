@@ -50,10 +50,11 @@ As usual, drop the mod under GameData. If something goes wrong, check the config
 			- You don't impersonate the authors, neither redistribute a derivative that could be misrepresented as theirs.
 			- You credit the author and republish the copyright notices on your works where the code is used.
 			- You relicense (and fully comply) your works using GPL 2.0
+				- Please note that upgrading the license to GPLv3 **IS NOT ALLOWED** for this work, as the author **DID NOT** added the "or (at your option) any later version" on the license.
 			- You don't mix your work with GPL incompatible works.
 	* If by some reason the GPL would be invalid for you, rest assured that you still retain the right to Use the Work under SKL 1.0. 
 
-Releases previous to 0.9.8 are still available under the MIT license [here](https://github.com/net-lisias-kspu/WorldStabilizer/tree/upstream/master).
+Releases previous to 0.9.8 are still available under the MIT license [here](https://github.com/net-lisias-kspu/WorldStabilizer/tree/upstream/master) and on the in upstream's repositories. Please note this [statement](https://www.gnu.org/licenses/license-list.en.html#Expat) from FSF.
 
 Please note the copyrights and trademarks in [NOTICE](./NOTICE).
 
